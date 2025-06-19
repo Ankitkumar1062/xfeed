@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>X Feed Viewer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>X Feed Viewer</h1>
+    
+    <div id="server-status" class="server-status">
+      Checking server status...
+    </div>
+    
+    <div id="login-section" class="section">
+      <h2>Add Token</h2>
+      <p>To view someone's feed, you need their access token (shared with permission).</p>
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="@username">
+      </div>
+      <div class="form-group">
+        <label for="token">Access Token:</label>
+        <textarea id="token" placeholder='{"auth_token":"value","ct0":"value"}'></textarea>
+      </div>
+      <button id="save-token">Save</button>
+    </div>
+    
+    <div id="feeds-section" class="section">
+      <h2>Available Feeds</h2>
+      <ul id="feed-list">
+        <!-- Feed list will be dynamically populated -->
+      </ul>
+    </div>
+    
+    <div class="section">
+      <h2>Current View</h2>
+      <div id="current-feed">None selected</div>
+      <div class="button-group">
+        <button id="view-own-feed">View My Own Feed</button>
+        <button id="refresh-feed">Refresh Feed</button>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>Note: This extension only allows viewing of feeds. No interactions are possible.</p>
+      <p>Created by: @Ankitkumar1062</p>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

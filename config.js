@@ -1,1 +1,0 @@
-export const TRACKING_SERVER = 'http://localhost:8000'; 

@@ -1,337 +1,322 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      width: 450px;
-      min-height: 350px;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      margin: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-    
-    .header {
-      background: rgba(255,255,255,0.95);
-      padding: 20px;
-      text-align: center;
-      border-bottom: 3px solid #667eea;
-    }
-    
-    .header h2 {
-      margin: 0;
-      color: #333;
-      font-size: 24px;
-      font-weight: 600;
-    }
-    
-    .header .subtitle {
-      color: #666;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-    
-    .stats-container {
-      background: rgba(255,255,255,0.1);
-      padding: 15px;
-      margin: 0;
-    }
-    
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-bottom: 0;
-    }
-    
-    .stat {
-      text-align: center;
-      background: rgba(255,255,255,0.2);
-      padding: 15px 10px;
-      border-radius: 10px;
-      backdrop-filter: blur(10px);
-    }
-    
-    .stat-number {
-      font-size: 28px;
-      font-weight: bold;
-      color: white;
-      margin-bottom: 5px;
-    }
-    
-    .stat-label {
-      font-size: 12px;
-      color: rgba(255,255,255,0.9);
-      font-weight: 500;
-    }
-    
-    .content {
-      background: white;
-      max-height: 400px;
-      overflow-y: auto;
-      padding: 0;
-    }
-    
-    .filter-tabs {
-      display: flex;
-      background: #f8f9fa;
-      border-bottom: 1px solid #e9ecef;
-      padding: 0;
-    }
-    
-    .filter-tab {
-      flex: 1;
-      padding: 12px;
-      text-align: center;
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      font-size: 13px;
-      font-weight: 500;
-      color: #6c757d;
-      transition: all 0.2s;
-    }
-    
-    .filter-tab.active {
-      background: white;
-      color: #667eea;
-      border-bottom: 2px solid #667eea;
-    }
-    
-    .filter-tab:hover {
-      background: rgba(102, 126, 234, 0.1);
-    }
-    
-    .email-list {
-      padding: 15px;
-    }
-    
-    .tracking-item {
-      border: 1px solid #e9ecef;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .tracking-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-    
-    .tracking-item.opened {
-      background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-      border-color: #28a745;
-    }
-    
-    .tracking-item.sent {
-      background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-      border-color: #ffc107;
-    }
-    
-    .email-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-    
-    .email-to {
-      font-weight: 600;
-      color: #2c3e50;
-      font-size: 14px;
-      max-width: 200px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    
-    .platform-badge {
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    
-    .platform-gmail {
-      background: #ea4335;
-      color: white;
-    }
-    
-    .platform-yahoo {
-      background: #6001d2;
-      color: white;
-    }
-    
-    .email-subject {
-      color: #5a6c7d;
-      font-size: 13px;
-      margin: 8px 0;
-      font-style: italic;
-    }
-    
-    .email-details {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
-      font-size: 11px;
-    }
-    
-    .detail-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    
-    .status-badge {
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    
-    .status-opened {
-      background: #28a745;
-      color: white;
-    }
-    
-    .status-sent {
-      background: #ffc107;
-      color: #212529;
-    }
-    
-    .timestamp {
-      color: #6c757d;
-    }
-    
-    .no-data {
-      text-align: center;
-      padding: 60px 20px;
-      color: #6c757d;
-    }
-    
-    .no-data-icon {
-      font-size: 48px;
-      margin-bottom: 15px;
-    }
-    
-    .actions {
-      padding: 15px;
-      background: #f8f9fa;
-      border-top: 1px solid #e9ecef;
-      display: flex;
-      gap: 10px;
-    }
-    
-    .btn {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    
-    .btn-primary {
-      background: #667eea;
-      color: white;
-    }
-    
-    .btn-primary:hover {
-      background: #5a67d8;
-    }
-    
-    .btn-secondary {
-      background: #e9ecef;
-      color: #495057;
-    }
-    
-    .btn-secondary:hover {
-      background: #dee2e6;
-    }
-    
-    .tracking-id {
-      font-family: 'Courier New', monospace;
-      font-size: 10px;
-      color: #6c757d;
-      margin-top: 5px;
-    }
-    
-    /* Scrollbar styling */
-    .content::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .content::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-    
-    .content::-webkit-scrollbar-thumb {
-      background: #c1c1c1;
-      border-radius: 3px;
-    }
-    
-    .content::-webkit-scrollbar-thumb:hover {
-      background: #a8a8a8;
-    }
-  </style>
+  <title>Mail Tracker Pro</title>
+  <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="header">
-    <h2>📧 Mail Tracker</h2>
-    <div class="subtitle">Track email opens across Gmail & Yahoo</div>
-  </div>
-  
-  <div class="stats-container">
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-number" id="total-emails">0</div>
-        <div class="stat-label">Total</div>
+  <div class="container">
+    <header class="header">
+      <div class="header-top">
+        <div class="logo-section">
+          <img src="../icons/icon-48.png" alt="Mail Tracker Pro logo" class="logo">
+          <div class="title-section">
+            <h1>Mail Tracker Pro</h1>
+            <p class="subtitle">Real-time email tracking & analytics</p>
+          </div>
+        </div>
+        <div class="status-indicator" aria-live="polite">
+          <span class="status-dot" id="connection-status"></span>
+          <span class="status-text" id="status-text">Connecting...</span>
+        </div>
       </div>
-      <div class="stat">
-        <div class="stat-number" id="opened-emails">0</div>
-        <div class="stat-label">Opened</div>
+      
+      <div class="user-info">
+        <span class="user-greeting">Welcome back, <strong id="current-user">User</strong></span>
+        <time class="last-updated" id="last-updated">Last updated: Loading...</time>
       </div>
-      <div class="stat">
-        <div class="stat-number" id="open-rate">0%</div>
-        <div class="stat-label">Open Rate</div>
+    </header>
+
+    <div class="stats-dashboard">
+      <!-- Total Sent Stat -->
+      <div class="stat-card primary">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <span class="stat-number" id="total-emails">0</span>
+          <span class="stat-label">Total Sent</span>
+          <span class="stat-change positive" id="total-change">+0 today</span>
+        </div>
       </div>
-      <div class="stat">
-        <div class="stat-number" id="today-count">0</div>
-        <div class="stat-label">Today</div>
+      
+      <!-- Opened Stat -->
+      <div class="stat-card success">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20,6 9,17 4,12"/>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <span class="stat-number" id="opened-emails">0</span>
+          <span class="stat-label">Opened</span>
+          <span class="stat-change positive" id="opened-change">+0 today</span>
+        </div>
+      </div>
+      
+      <!-- Open Rate Stat -->
+      <div class="stat-card info">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <path d="M9 9h6v6H9z"/>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <span class="stat-number" id="open-rate">0%</span>
+          <span class="stat-label">Open Rate</span>
+          <span class="stat-trend up" id="rate-trend" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
+              <polyline points="17,6 23,6 23,12"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+      
+      <!-- Today's Stat -->
+      <div class="stat-card warning">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12,6 12,12 16,14"/>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <span class="stat-number" id="today-count">0</span>
+          <span class="stat-label">Today</span>
+          <span class="stat-change neutral" id="pending-count">0 pending</span>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <div class="content">
-    <div class="filter-tabs">
-      <button class="filter-tab active" data-filter="all">All Emails</button>
-      <button class="filter-tab" data-filter="opened">Opened</button>
-      <button class="filter-tab" data-filter="sent">Pending</button>
-      <button class="filter-tab" data-filter="today">Today</button>
+
+    <main class="main-content">
+      <section class="controls-section">
+        <!-- Filter Tabs -->
+        <nav class="filter-tabs" aria-label="Email filters">
+          <button class="filter-tab active" data-filter="all" aria-pressed="true">
+            <span class="tab-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+              </svg>
+            </span>
+            All
+            <span class="tab-count" id="all-count">0</span>
+          </button>
+          
+          <button class="filter-tab" data-filter="opened" aria-pressed="false">
+            <span class="tab-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </span>
+            Opened
+            <span class="tab-count" id="opened-count">0</span>
+          </button>
+          
+          <button class="filter-tab" data-filter="pending" aria-pressed="false">
+            <span class="tab-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+            </span>
+            Pending
+            <span class="tab-count" id="pending-tab-count">0</span>
+          </button>
+          
+          <button class="filter-tab" data-filter="today" aria-pressed="false">
+            <span class="tab-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </span>
+            Today
+            <span class="tab-count" id="today-tab-count">0</span>
+          </button>
+        </nav>
+
+        <!-- Search and Sort -->
+        <div class="search-section">
+          <div class="search-bar" role="search">
+            <span class="search-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+              </svg>
+            </span>
+            <input type="text" id="search-input" placeholder="Search emails..." aria-label="Search emails">
+            <button class="clear-search" id="clear-search" title="Clear search" aria-label="Clear search">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="sort-options">
+            <label for="sort-select" class="sr-only">Sort by</label>
+            <select id="sort-select" class="sort-dropdown" aria-label="Sort emails by">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="most-opened">Most Opened</option>
+              <option value="recently-opened">Recently Opened</option>
+              <option value="recipient">By Recipient</option>
+            </select>
+            <span class="dropdown-arrow" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6,9 12,15 18,9"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Email List Section -->
+      <section class="email-list" id="emailList" aria-live="polite">
+        <div class="loading-state" id="loadingState" style="display: none;" role="status">
+          <div class="spinner">
+            <div class="spinner-ring"></div>
+          </div>
+          <p>Loading tracked emails...</p>
+        </div>
+        
+        <div class="no-data" id="noDataMessage">
+          <div class="no-data-icon" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <h3>No tracked emails yet</h3>
+          <p>Start tracking by composing a message in Gmail. The tracking pixel will be automatically inserted when you send!</p>
+          <div class="quick-actions">
+            <a href="https://mail.google.com" class="btn btn-primary" id="open-gmail">
+              <span class="btn-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+              </span>
+              Open Gmail
+            </a>
+            <button class="btn btn-secondary" id="view-guide">
+              <span class="btn-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+              </span>
+              View Guide
+            </button>
+          </div>
+        </div>
+
+        <div class="empty-search" id="emptySearchMessage" style="display: none;">
+          <div class="no-data-icon" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </div>
+          <h3>No emails found</h3>
+          <p>Try adjusting your search terms or filters.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-stats">
+        <span class="footer-stat">
+          <strong id="footer-total">0</strong> emails tracked
+        </span>
+        <span class="footer-stat">
+          <strong id="footer-success-rate">0%</strong> success rate
+        </span>
+        <span class="footer-stat">
+          Server: <span class="server-status" id="server-status">Checking...</span>
+        </span>
+      </div>
+      
+      <div class="footer-actions">
+        <button id="refresh-btn" class="btn btn-secondary" title="Refresh data">
+          <span class="btn-icon" aria-hidden="true">↻</span>
+          Refresh
+        </button>
+        
+        <button id="export-btn" class="btn btn-info" title="Export data">
+          <span class="btn-icon" aria-hidden="true">↓</span>
+          Export
+        </button>
+        
+        <button id="settings-btn" class="btn btn-secondary" title="Settings">
+          <span class="btn-icon" aria-hidden="true">⚙</span>
+          Settings
+        </button>
+        
+        <button id="clear-btn" class="btn btn-danger" title="Clear all data">
+          <span class="btn-icon" aria-hidden="true">🗑️</span>
+          Clear All
+        </button>
+      </div>
+    </footer>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <!-- Email Details Modal -->
+    <div class="modal-overlay" id="emailModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="modalTitle">Email Details</h3>
+          <button class="modal-close" id="closeModal" aria-label="Close modal">×</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+      </div>
     </div>
-    
-    <div class="email-list" id="emailList">
-      <!-- Email items will be populated here -->
+
+    <!-- Context Menu -->
+    <div class="context-menu" id="contextMenu" style="display: none;" role="menu">
+      <button class="context-item" data-action="view-details" role="menuitem">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        </svg>
+        View Details
+      </button>
+      <button class="context-item" data-action="copy-link" role="menuitem">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        </svg>
+        Copy Tracking Link
+      </button>
+      <button class="context-item" data-action="resend" role="menuitem">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        </svg>
+        Resend Email
+      </button>
+      <hr class="context-divider">
+      <button class="context-item danger" data-action="delete" role="menuitem">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="3,6 5,6 21,6"/>
+          <path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2V6"/>
+        </svg>
+        Delete Tracking
+      </button>
     </div>
   </div>
-  
-  <div class="actions">
-    <button class="btn btn-primary" id="refresh-btn">🔄 Refresh</button>
-    <button class="btn btn-secondary" id="clear-btn">🗑️ Clear All</button>
-  </div>
-  
+
   <script src="popup.js"></script>
 </body>
 </html>

@@ -11,36 +11,34 @@ A privacy-friendly, open-source email tracking extension for Gmail. Track when y
 
 ---
 
-## 1. Deploying the Server on Render.com
+## 1b. Deploying the Server on Railway
 
 ### Prerequisites
-- A [Render.com](https://render.com/) account
+- A [Railway](https://railway.app/) account
 - A GitHub account (to connect your repo)
 
 ### Steps
 1. **Push your code to GitHub** (if not already):
    - Make sure your server code (`server.js`, `package.json`, etc.) is in a public or private repo.
 
-2. **Create a New Web Service on Render:**
-   - Go to your Render dashboard and click **"New +" > "Web Service"**.
-   - Connect your GitHub account and select your repository.
+2. **Create a New Project on Railway:**
+   - Go to your Railway dashboard and click **"New Project"**.
+   - Select **"Deploy from GitHub repo"** and choose your repository.
 
 3. **Configure the Service:**
-   - **Environment:** Node
-   - **Build Command:** `npm install`
+   - **Service Type:** Node.js
+   - **Install Command:** `npm install`
    - **Start Command:** `node server.js`
-   - **Root Directory:** (leave blank if your server.js is in the root)
-   - **Instance Type:** Free or Starter (as needed)
    - **Environment Variables:**
-     - (Optional) `PORT=10000` (Render will set this automatically, but your code should use `process.env.PORT`)
+     - (Optional) `PORT=10000` (Railway will set this automatically, but your code should use `process.env.PORT`)
 
 4. **Deploy:**
-   - Click **Create Web Service**. Wait for the build and deployment to finish.
-   - Once deployed, note your public URL (e.g., `https://your-app.onrender.com`).
+   - Click **Deploy**. Wait for the build and deployment to finish.
+   - Once deployed, note your public URL (e.g., `https://mailtracker-production-fea4.up.railway.app`).
 
 5. **Update Extension:**
-   - In your extension code (background.js, content.js), set the server URL to your Render URL.
-   - Example: `const TRACKING_SERVER = 'https://your-app.onrender.com';`
+   - In your extension code (background.js, content.js), set the server URL to your Railway URL.
+   - Example: `const TRACKING_SERVER = 'https://mailtracker-production-fea4.up.railway.app';`
 
 ---
 

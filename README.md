@@ -11,7 +11,7 @@ A privacy-friendly, open-source email tracking extension for Gmail. Track when y
 
 ---
 
-## 1b. Deploying the Server on Railway
+## 1. Deploying the Server on Railway
 
 ### Prerequisites
 - A [Railway](https://railway.app/) account

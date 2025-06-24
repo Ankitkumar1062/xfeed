@@ -29,9 +29,9 @@ function logTrackingData(trackingId, req) {
   const ip = req.headers["x-forwarded-for"] || req.connection?.remoteAddress;
   const referer = req.get("Referer") || "";
 
-  console.log(`🔍 DEBUG - TrackingId: ${trackingId}`);
-  console.log(`🔍 DEBUG - UserAgent: ${userAgent}`);
-  console.log(`🔍 DEBUG - Referer: ${referer}`);
+  console.log(`DEBUG - TrackingId: ${trackingId}`);
+  console.log(`DEBUG - UserAgent: ${userAgent}`);
+  console.log(`DEBUG - Referer: ${referer}`);
 
   // Enhanced bot detection - EXCLUDE Google Image Proxy from bot detection
   const isBot =
@@ -53,7 +53,7 @@ function logTrackingData(trackingId, req) {
         userAgent.includes("Safari")) &&
       !isBot);
 
-  console.log(`🔍 DEBUG - isBot: ${isBot}, isRealBrowser: ${isRealBrowser}`);
+  console.log(`DEBUG - isBot: ${isBot}, isRealBrowser: ${isRealBrowser}`);
 
   // Sender detection patterns
   const isSenderAccess =
@@ -76,7 +76,7 @@ function logTrackingData(trackingId, req) {
     // If this looks like sender access, mark it and skip logging
     if (isSenderAccess || isBot || !isRealBrowser) {
       console.log(
-        `👤 Sender/Bot access detected for ${trackingId} - skipping event logging`
+        `Sender/Bot access detected for ${trackingId} - skipping event logging`
       );
       console.log(`   UserAgent: ${userAgent}`);
       console.log(`   Referer: ${referer}`);
@@ -87,7 +87,7 @@ function logTrackingData(trackingId, req) {
   const senderAccess = senderAccessTimes.get(trackingId);
   const timeSinceSender = timestamp - senderAccess;
 
-  console.log(`🔍 DEBUG - timeSinceSender: ${timeSinceSender}ms`);
+  console.log(`DEBUG - timeSinceSender: ${timeSinceSender}ms`);
 
   // Only log if this appears to be a genuine receiver open
   const isLikelyReceiver =
@@ -116,7 +116,7 @@ function logTrackingData(trackingId, req) {
         userAgent.includes("ggpht.com"),
     });
 
-    console.log(`✅ RECEIVER OPEN recorded for ${trackingId}`);
+    console.log(`RECEIVER OPEN recorded for ${trackingId}`);
     console.log(`   Delay since sender: ${timeSinceSender}ms`);
     console.log(`   UserAgent: ${userAgent}`);
     console.log(`   Referer: ${referer}`);
@@ -137,7 +137,7 @@ function logTrackingData(trackingId, req) {
       ? "already logged"
       : "unknown";
 
-    console.log(`ℹ️ Access skipped for ${trackingId} - Reason: ${reason}`);
+    console.log(`Access skipped for ${trackingId} - Reason: ${reason}`);
     console.log(
       `   timeSinceSender: ${timeSinceSender}ms, isRealBrowser: ${isRealBrowser}`
     );
@@ -228,8 +228,8 @@ app.get("/api/tracking/:trackingId", (req, res) => {
   const { trackingId } = req.params;
   const events = receiverEvents.get(trackingId) || [];
 
-  console.log(`📊 API request for tracking ID: ${trackingId}`);
-  console.log(`📊 Found ${events.length} receiver events`);
+  console.log(`API request for tracking ID: ${trackingId}`);
+  console.log(`Found ${events.length} receiver events`);
 
   const data = {
     trackingId,
@@ -247,11 +247,6 @@ app.get("/api/tracking/:trackingId", (req, res) => {
   res.json(data);
 });
 
-// Health check endpoint (unchanged)
-app.get("/health", (req, res) => {
-  res.json({ status: "ok", timestamp: Date.now() });
-});
-
 app.options("/api/tracking/:trackingId", (req, res) => {
   res.set({
     "Access-Control-Allow-Origin": "*",
@@ -261,15 +256,18 @@ app.options("/api/tracking/:trackingId", (req, res) => {
   res.sendStatus(200);
 });
 
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.use((err, req, res, next) => {
   console.error("❌ Server error:", err);
   res.status(500).json({ error: "Internal server error" });
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Tracking server running on http://localhost:${PORT}`);
-  console.log(`📊 Track endpoint: http://localhost:${PORT}/track/{trackingId}`);
-  console.log(
-    `🎯 Enhanced sender/receiver detection with Google Image Proxy support enabled`
-  );
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Track endpoint: http://localhost:${PORT}/track/{trackingId}`);
+  console.log(`API endpoint: http://localhost:${PORT}/api/tracking/{trackingId}`);
 });

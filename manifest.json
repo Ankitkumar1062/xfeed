@@ -1,0 +1,37 @@
+{
+  "manifest_version": 2,
+  "name": "Simple Mail Tracker - Background Network",
+  "version": "1.0.0",
+  "description": "Simple email tracking with background network requests",
+  
+  "permissions": [
+    "https://mail.google.com/*",
+    "https://mail.yahoo.com/*",
+    "https://*.yahoo.com/*",
+    "https://gmail-tracker-xeo1.onrender.com/*",
+    "storage",
+    "notifications"
+  ],
+  
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*",
+        "https://mail.yahoo.com/*",
+        "https://*.yahoo.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+  
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Mail Tracker"
+  }
+}
